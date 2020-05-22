@@ -10,7 +10,7 @@ namespace GK {
 	[RequireComponent(typeof(Camera))]
 	public class Stippling : MonoBehaviour {
 
-		public TextAsset VoronoiSet;
+		public IVSAsset IVS;
 		//public Shader Shader;
 		public ComputeShader VoronoiCompute;
 		public Material Material;
@@ -66,24 +66,25 @@ namespace GK {
 			}
 		}
 
-		Vector2[] GetPoints() {
-			return VoronoiSet.text
-				.Split('\n')
-				.Where(str => str.IndexOf(',') != -1)
-				.Select(str => str
-					.Split(',')
-					.Select(s => float.Parse(s))
-					.ToArray())
-				.Select(p => new Vector2(p[0], p[1]))
-				.ToArray();
-		}
+		// Vector2[] GetPoints() {
+		// 	return IVS.text
+		// 		.Split('\n')
+		// 		.Where(str => str.IndexOf(',') != -1)
+		// 		.Select(str => str
+		// 			.Split(',')
+		// 			.Select(s => float.Parse(s))
+		// 			.ToArray())
+		// 		.Select(p => new Vector2(p[0], p[1]))
+		// 		.ToArray();
+		// }
 
 		void OnEnable() {
 			// material = new Material(Shader);
 			
 			// material.enableInstancing = true;
+			if (!IVS) return;
 			
-			var data = GetPoints();
+			var data = IVS.Points;
 			stippleCount = data.Length;
 			
 			Debug.Assert(stippleCount == (1024 * 1024));
