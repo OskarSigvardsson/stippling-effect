@@ -7,23 +7,25 @@
 uint _MaxStipples;
 float _NibSize;
 float2 _TexSize;
+float4 _PixTrans;
 
 Texture2D<float4> _ScreenTexture;
 StructuredBuffer<float2> _Points;
 AppendStructuredBuffer<float3> _Particles;
 //RWStructuredBuffer<float2> _Output;
 
-
 [numthreads(256,1,1)]
 void StreamStipples (uint3 id : SV_DispatchThreadID)
 {
 	if (id.x < _MaxStipples) {
+        float2x2 T = float2x2(_PixTrans.xy, _PixTrans.zw);
+        //float2x2 TI = float2x2(_PixTransInv.xy, _PixTransInv.zw);
 		float2 loc = _Points[id.x];
-		float3 col = _ScreenTexture[_TexSize * loc].rgb;
-		float luma = dot(col, float3(0.2126, 0.7152, 0.0722));
-		// luma = smoothstep(0,1,luma);
-		//luma = pow(luma, 1/2.2);
-		//float luma = loc.x;
+        float2 locT = mul(T, loc);
+
+		float3 col = _ScreenTexture[_TexSize * locT].rgb;
+		float luma = 1 - dot(col, float3(0.2126, 0.7152, 0.0722));
+
 		float area = 4.0/id.x;
 
 		if (area > _NibSize / luma) {

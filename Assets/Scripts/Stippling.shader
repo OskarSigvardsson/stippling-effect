@@ -6,7 +6,7 @@
 
 // Upgrade NOTE: replaced 'UNITY_INSTANCE_ID' with 'UNITY_VERTEX_INPUT_INSTANCE_ID'
 
-Shader "Custom/Stippling"
+Shader "Hidden/Stippling"
 {
     Properties
     {
@@ -85,6 +85,9 @@ Shader "Custom/Stippling"
 			//#if 0
 			#if SHADER_TARGET >= 45
 				float3 inst = _Particles[instanceID];
+
+				inst.y = 1 - inst.y;
+				
 				float4x4 transform = mul(
 					translate(float3(2 * inst.xy - 1, 0.0)),
 					scale(_NibRadius));
@@ -94,6 +97,7 @@ Shader "Custom/Stippling"
 				float4x4 transform = scale(1);
 				float luma = 0.5;
 			#endif
+
 				o.vertex = mul(transform, float4(v.vertex.xyz, 1.0));
 				o.color = float3(luma, luma, luma);
                 o.uv = v.uv;
