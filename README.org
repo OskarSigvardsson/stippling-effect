@@ -3,7 +3,7 @@
 This repository contains a work-in-progress post processing effect in Unity that
 creates a "stippled" look, as if the image was just drawn with black dots. It's
 sort-of a pointillism effect, sort-of digital half-toning, and very much a work
-in progress, so the repository is a little bit messy. This is what it looks like
+in progress, so the repository is a bit messy. This is what it looks like
 as a gif (though cramming it into a gif destroys the effect a bit): 
 
 [[./demo.gif]]
